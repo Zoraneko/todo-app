@@ -1,6 +1,7 @@
 import type { FilterState, Task, TaskStatus } from "@/types";
 import TaskItem from "./TaskItem";
 import { cn } from "@/lib/utils";
+import { getStatusBadge } from "@/utils/getStatusBadge";
 interface TaskListProps {
     tasks: Task[];
     filter: FilterState;
@@ -16,15 +17,20 @@ export default function TaskList({ tasks, filter }: TaskListProps) {
     return (
         <div className={cn("grid grid-cols-1 gap-4",
             {
-                "grid-cols-3": filter?.status == "All",
-                "grid-cols-1": filter?.status != "All",
+                "grid-cols-1 md:grid-cols-2 lg:grid-cols-3": filter?.status == "All",
+                "grid-cols-1 ": filter?.status != "All",
             })}>
             {statuses.map((status) => (
                 <div key={status} className="flex flex-col gap-4">
-                    <h3 className="font-bold text-lg text-center">{status}</h3>
-                    {tasks.filter((task) => task.status === status).map((task) => (
-                        <TaskItem key={task.id} task={task} />
-                    ))}
+                    {getStatusBadge(status)}
+                    <div className={cn("grid gap-4", {
+                        "grid-cols-1": filter?.status == "All",
+                        "grid-cols-1 md:grid-cols-2 lg:grid-cols-3": filter?.status != "All",
+                    })}>
+                        {tasks.filter((task) => task.status === status).map((task) => (
+                            <TaskItem key={task.id} task={task} />
+                        ))}
+                    </div>
                 </div>
             ))}
         </div>
