@@ -96,7 +96,7 @@ export default function TodoDashboard() {
 
             <TaskFilter filter={filter} onChange={handleFilterChange} />
 
-            <TaskList tasks={tasks} />
+            <TaskList tasks={tasks} filter={filter} />
         </div>
     )
 }
