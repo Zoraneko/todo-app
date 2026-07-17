@@ -1,4 +1,4 @@
-import { Task } from '../types';
+import type { Task } from '../types';
 
 export const mockTasks: Task[] = [
   {
@@ -14,7 +14,7 @@ export const mockTasks: Task[] = [
     id: 'task-1784560000002',
     title: 'Nghiên cứu lưu trữ LocalStorage',
     description: 'Tìm hiểu cách lưu trữ, đồng bộ dữ liệu và khôi phục state từ LocalStorage khi reload trang.',
-    deadline: '2026-07-16T17:00:00+07:00', // Cố tình quá hạn để test
+    deadline: '2026-07-16T17:00:00+07:00',
     status: 'To Do',
     priority: 'Urgent',
     createdAt: '2026-07-16T09:00:00+07:00'
