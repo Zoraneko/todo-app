@@ -1,7 +1,9 @@
 import type { FilterState, TaskStatus, TaskPriority } from "../../types"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Search } from "lucide-react"
+import { getPriorityBadge } from "@/utils/getPriorityBadge";
+import { getStatusBadge } from "@/utils/getStatusBadge";
+import { CalendarClock, ClockPlus, Search } from "lucide-react"
 
 interface TaskFilterProps {
     filter: FilterState;
@@ -33,9 +35,9 @@ export default function TaskFilter({ filter, onChange }: TaskFilterProps) {
                         </SelectTrigger>
                         <SelectContent>
                             <SelectItem value="All">All Status</SelectItem>
-                            <SelectItem value="To Do">To Do</SelectItem>
-                            <SelectItem value="In Progress">In Progress</SelectItem>
-                            <SelectItem value="Done">Done</SelectItem>
+                            <SelectItem value="To Do">{getStatusBadge("To Do")}</SelectItem>
+                            <SelectItem value="In Progress">{getStatusBadge("In Progress")}</SelectItem>
+                            <SelectItem value="Done">{getStatusBadge("Done")}</SelectItem>
                         </SelectContent>
                     </Select>
                 </div>
@@ -48,10 +50,10 @@ export default function TaskFilter({ filter, onChange }: TaskFilterProps) {
                         </SelectTrigger>
                         <SelectContent>
                             <SelectItem value="All">All Priority</SelectItem>
-                            <SelectItem value="Low">Low</SelectItem>
-                            <SelectItem value="Medium">Medium</SelectItem>
-                            <SelectItem value="High">High</SelectItem>
-                            <SelectItem value="Urgent">Urgent</SelectItem>
+                            <SelectItem value="Low">{getPriorityBadge("Low")}</SelectItem>
+                            <SelectItem value="Medium">{getPriorityBadge("Medium")}</SelectItem>
+                            <SelectItem value="High">{getPriorityBadge("High")}</SelectItem>
+                            <SelectItem value="Urgent">{getPriorityBadge("Urgent")}</SelectItem>
                         </SelectContent>
                     </Select>
                 </div>
@@ -63,8 +65,8 @@ export default function TaskFilter({ filter, onChange }: TaskFilterProps) {
                             <SelectValue placeholder="Sort by" />
                         </SelectTrigger>
                         <SelectContent>
-                            <SelectItem value="deadline">Deadline</SelectItem>
-                            <SelectItem value="createdAt">Created Date</SelectItem>
+                            <SelectItem value="deadline"> <div className="flex flex-row justify-content items-center gap-2"><CalendarClock size={16} />Deadline</div></SelectItem>
+                            <SelectItem value="createdAt"> <div className="flex flex-row justify-content items-center gap-2"><ClockPlus size={16} />Created Date</div></SelectItem>
                         </SelectContent>
                     </Select>
                 </div>
