@@ -15,6 +15,7 @@ import {
     DialogTrigger,
     DialogClose
 } from "../ui/dialog";
+import TaskList from "./TaskList";
 
 const STORAGE_KEY = "todo_tasks";
 
@@ -86,7 +87,7 @@ export default function TodoDashboard() {
                                 <Button variant="outline">Cancel</Button>
                             </DialogClose>
                             <DialogClose asChild>
-                                <Button variant="destructive" onClick={handleClearAll}>Yes, coninute</Button>
+                                <Button variant="destructive" onClick={handleClearAll}>Yes, coninue</Button>
                             </DialogClose>
                         </DialogFooter>
                     </DialogContent>
@@ -94,6 +95,8 @@ export default function TodoDashboard() {
             </div>
 
             <TaskFilter filter={filter} onChange={handleFilterChange} />
+
+            <TaskList tasks={tasks} />
         </div>
     )
 }
