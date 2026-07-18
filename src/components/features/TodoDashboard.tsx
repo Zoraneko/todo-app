@@ -18,6 +18,7 @@ import {
 import TaskList from "./TaskList";
 import TaskPopup from "./TaskPopup";
 import type { PopupState } from "../../types";
+import { PlusCircle } from "lucide-react";
 
 const STORAGE_KEY = "todo_tasks";
 
@@ -109,43 +110,43 @@ export default function TodoDashboard() {
 
     return (
         <div className="flex flex-col gap-6">
-            <div className="flex flex-col sm:flex-row gap-4 items-center justify-between">
-                <Button onClick={handleOpenCreate} className="w-full sm:w-auto">
+            <div className="flex flex-col md:flex-row gap-4 items-center">
+                <Button onClick={handleOpenCreate} className="w-full md:w-auto">
+                    <PlusCircle />
                     Add New Task
                 </Button>
-                <span className="w-full "></span>
-                <Button onClick={handleAddMockData} variant="secondary" className="w-full sm:w-auto">
-                    Add mock tasks
-                </Button>
-                <Dialog>
-                    <DialogTrigger asChild>
-                        <Button variant="destructive" className="w-full sm:w-auto">
-                            Delete all mock tasks
-                        </Button>
-                    </DialogTrigger>
-                    <DialogContent>
-                        <DialogHeader>
-                            <DialogTitle>Confirm Action</DialogTitle>
-                            <DialogDescription>
-                                Are you sure you want to delete all mock tasks?
-                            </DialogDescription>
-                        </DialogHeader>
-                        <DialogFooter>
-                            <DialogClose asChild>
-                                <Button variant="outline">Cancel</Button>
-                            </DialogClose>
-                            <DialogClose asChild>
-                                <Button variant="destructive" onClick={handleClearAll}>Yes, coninue</Button>
-                            </DialogClose>
-                        </DialogFooter>
-                    </DialogContent>
-                </Dialog>
+                <TaskFilter filter={filter} onChange={handleFilterChange} />
             </div>
 
-            <TaskFilter filter={filter} onChange={handleFilterChange} />
 
             <TaskList tasks={tasks} filter={filter} onOpenEdit={handleOpenEdit} />
-
+            <span className="w-full "></span>
+            <Button onClick={handleAddMockData} variant="secondary" className="w-full sm:w-auto">
+                Add mock tasks
+            </Button>
+            <Dialog>
+                <DialogTrigger asChild>
+                    <Button variant="destructive" className="w-full sm:w-auto">
+                        Delete all mock tasks
+                    </Button>
+                </DialogTrigger>
+                <DialogContent>
+                    <DialogHeader>
+                        <DialogTitle>Confirm Action</DialogTitle>
+                        <DialogDescription>
+                            Are you sure you want to delete all mock tasks?
+                        </DialogDescription>
+                    </DialogHeader>
+                    <DialogFooter>
+                        <DialogClose asChild>
+                            <Button variant="outline">Cancel</Button>
+                        </DialogClose>
+                        <DialogClose asChild>
+                            <Button variant="destructive" onClick={handleClearAll}>Yes, coninue</Button>
+                        </DialogClose>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
             <TaskPopup
                 isOpen={popupState.isOpen}
                 mode={popupState.mode}
