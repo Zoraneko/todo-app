@@ -52,7 +52,9 @@ export default function TaskPopup({ isOpen, mode, task, onClose, onSave, onDelet
     };
 
     const handleDelete = () => {
-        onDelete(task.id);
+        if (task?.id) {
+            onDelete(task.id);
+        }
     };
 
     const handlePopupDataChange = (newData: Partial<Task>) => {
