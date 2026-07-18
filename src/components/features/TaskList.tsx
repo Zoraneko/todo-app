@@ -5,9 +5,10 @@ import { getStatusBadge } from "@/utils/getStatusBadge";
 interface TaskListProps {
     tasks: Task[];
     filter: FilterState;
+    onOpenEdit: (task: Task) => void;
 }
 
-export default function TaskList({ tasks, filter }: TaskListProps) {
+export default function TaskList({ tasks, filter, onOpenEdit }: TaskListProps) {
     if (!tasks || tasks.length === 0) return (<span className="flex flex-row text-lg font-bold justify-center">
         There is currently no tasks. Try adding one by pressing "Add Task" button.
     </span>)
@@ -52,7 +53,7 @@ export default function TaskList({ tasks, filter }: TaskListProps) {
                         "grid-cols-1 md:grid-cols-2 lg:grid-cols-3": filter?.status != "All",
                     })}>
                         {filteredTasks.filter((task) => task.status === status).map((task) => (
-                            <TaskItem key={task.id} task={task} />
+                            <TaskItem key={task.id} task={task} onOpenEdit={onOpenEdit} />
                         ))}
                     </div>
                 </div>

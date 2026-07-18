@@ -16,10 +16,17 @@ import {
     DialogClose
 } from "../ui/dialog";
 import TaskList from "./TaskList";
+import TaskPopup from "./TaskPopup";
+import type { PopupState } from "../../types";
 
 const STORAGE_KEY = "todo_tasks";
 
 export default function TodoDashboard() {
+    const [popupState, setPopupState] = useState<PopupState>({
+        isOpen: false,
+        mode: 'create',
+        selectedTask: null
+    });
     const [tasks, setTasks] = useState<Task[]>(() => {
         const saved = localStorage.getItem(STORAGE_KEY);
         if (saved) {
@@ -62,9 +69,50 @@ export default function TodoDashboard() {
         toast.success("All tasks deleted");
     };
 
+    const handleOpenCreate = () => {
+        setPopupState({ isOpen: true, mode: 'create', selectedTask: null });
+    };
+
+    const handleOpenEdit = (task: Task) => {
+        setPopupState({ isOpen: true, mode: 'edit', selectedTask: task });
+    };
+
+    const handleClosePopup = () => {
+        setPopupState(prev => ({ ...prev, isOpen: false }));
+    };
+
+    const handleSaveTask = (taskData: Partial<Task>) => {
+        if (popupState.mode === 'create' || !taskData.id) {
+            const newTask: Task = {
+                id: uuidv4(),
+                title: taskData.title || '',
+                description: taskData.description || '',
+                deadline: taskData.deadline || '',
+                status: taskData.status || 'To Do',
+                priority: taskData.priority || 'Medium',
+                createdAt: taskData.createdAt || new Date().toISOString(),
+            };
+            setTasks(prev => [...prev, newTask]);
+            toast.success("Task created successfully!");
+        } else {
+            setTasks(prev => prev.map(t => t.id === taskData.id ? { ...t, ...taskData } as Task : t));
+            toast.success("Task updated successfully!");
+        }
+        handleClosePopup();
+    };
+
+    const handleDeleteTask = (taskId: string) => {
+        setTasks(prev => prev.filter(t => t.id !== taskId));
+        toast.success("Task deleted successfully!");
+        handleClosePopup();
+    };
+
     return (
         <div className="flex flex-col gap-6">
             <div className="flex flex-col sm:flex-row gap-4 items-center justify-between">
+                <Button onClick={handleOpenCreate} className="w-full sm:w-auto">
+                    Add New Task
+                </Button>
                 <span className="w-full "></span>
                 <Button onClick={handleAddMockData} variant="secondary" className="w-full sm:w-auto">
                     Add mock tasks
@@ -96,7 +144,16 @@ export default function TodoDashboard() {
 
             <TaskFilter filter={filter} onChange={handleFilterChange} />
 
-            <TaskList tasks={tasks} filter={filter} />
+            <TaskList tasks={tasks} filter={filter} onOpenEdit={handleOpenEdit} />
+
+            <TaskPopup
+                isOpen={popupState.isOpen}
+                mode={popupState.mode}
+                task={popupState.selectedTask}
+                onClose={handleClosePopup}
+                onSave={handleSaveTask}
+                onDelete={handleDeleteTask}
+            />
         </div>
     )
 }
