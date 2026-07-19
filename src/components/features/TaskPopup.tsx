@@ -8,7 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { getStatusBadge } from "@/utils/getStatusBadge";
 import { getPriorityBadge } from "@/utils/getPriorityBadge";
-import { File, Trash2, X } from "lucide-react";
+import { File, Trash2, X, AlertCircle } from "lucide-react";
 
 interface TaskPopupProps {
     isOpen: boolean;
@@ -61,6 +61,8 @@ export default function TaskPopup({ isOpen, mode, task, onClose, onSave, onDelet
         setTempTask(prev => ({ ...prev, ...newData }));
     }
 
+    const isOverdue = tempTask?.status !== 'Done' && tempTask?.deadline && new Date(tempTask.deadline).getTime() < new Date().getTime();
+
     return (
         <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
             <DialogContent>
@@ -68,6 +70,12 @@ export default function TaskPopup({ isOpen, mode, task, onClose, onSave, onDelet
                     <DialogTitle className="font-bold text-xl">{mode === 'create' ? 'Create Task' : 'Edit Task'}</DialogTitle>
                 </DialogHeader>
                 <div className="flex flex-col gap-4">
+                    {isOverdue && (
+                        <div className="flex flex-row items-center gap-2 p-3 bg-red-100 text-red-700 rounded-lg font-bold border border-red-300">
+                            <AlertCircle size={20} />
+                            <span>This task is overdue!</span>
+                        </div>
+                    )}
                     <div >
                         <Label>Title</Label>
                         <Input
